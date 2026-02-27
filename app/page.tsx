@@ -137,12 +137,13 @@ export default function LandingPage() {
 
       <AnimatePresence mode="wait">
         {pageState !== "checkpoint" ? (
-          <m.div
+          <m.main
             key="idle-prank"
             variants={containerVariants}
             initial="initial"
             animate="animate"
             exit="exit"
+            aria-label="Welcome and challenge screen"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -199,17 +200,19 @@ export default function LandingPage() {
                   zIndex: 100,
                   transition: pageState === "prank" ? "all 0.1s ease-out" : "box-shadow 0.2s ease, transform 0.2s ease",
                 }}
+                aria-label={pageState === "idle" ? "เริ่มดูของขวัญ" : "จิ้มปุ่มนี้"}
               >
                 {pageState === "idle" ? "พร้อมแล้ว กดตรงนี้" : "จิ้มปุ่มนี้สิ"}
               </m.button>
             </m.div>
-          </m.div>
+          </m.main>
         ) : (
-          <m.div
+          <m.main
             key="checkpoint"
             variants={containerVariants}
             initial="initial"
             animate="animate"
+            aria-label="Confirmation questions"
             style={{
               position: "relative",
               zIndex: 1,
@@ -274,6 +277,7 @@ export default function LandingPage() {
                     exit={{ scale: 0.5, opacity: 0 }}
                     onClick={handleConfirm}
                     className="btn-primary glow-pulse"
+                    aria-label="ยืนยันและไปดูวิดีโอของขวัญ"
                   >
                     ยืนยัน! ไปดูกันเลยยย
                   </m.button>
@@ -284,7 +288,7 @@ export default function LandingPage() {
                 )}
               </AnimatePresence>
             </m.div>
-          </m.div>
+          </m.main>
         )}
       </AnimatePresence>
     </div>

@@ -11,7 +11,18 @@ const mitr = Mitr({
 
 export const metadata: Metadata = {
   title: "ของขวัญพิเศษสำหรับอ้วน 🎓💕",
-  description: "วันพิเศษของปุ้มปุ้ยที่รัก สำเร็จการศึกษาแล้ว!",
+  description: "วันพิเศษของปุ้มปุ้ยที่รัก สำเร็จการศึกษาแล้ว! เก่งที่สุดเลยนะคับอ้วน",
+  metadataBase: new URL("https://nextjs-boilerplate-ppnnoots-projects.vercel.app"),
+  openGraph: {
+    title: "ของขวัญพิเศษสำหรับอ้วน 🎓💕",
+    description: "วันพิเศษของปุ้มปุ้ยที่รัก สำเร็จการศึกษาแล้ว!",
+    url: "https://nextjs-boilerplate-ppnnoots-projects.vercel.app",
+    siteName: "GradGift For You",
+    locale: "th_TH",
+    type: "website",
+  },
+  themeColor: "#ff85b1",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 };
 
 export default function RootLayout({
@@ -21,6 +32,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="th">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className={mitr.className}>{children}</body>
     </html>
   );

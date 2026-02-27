@@ -148,7 +148,9 @@ export default function GiftPage() {
         <FloatingHearts count={16} />
 
       {/* Nav bar: ย้อนกลับ / ถัดไป */}
-      <div
+      <nav
+        role="navigation"
+        aria-label="การนำทางหลัก"
         style={{
           position: "relative",
           zIndex: 2,
@@ -177,6 +179,7 @@ export default function GiftPage() {
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "#fff0f5"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+            aria-label="ย้อนกลับไปหน้าก่อนหน้า"
           >
             ← ย้อนกลับ
           </button>
@@ -203,20 +206,22 @@ export default function GiftPage() {
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = "#fff0f5"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+            aria-label="ไปหน้าถัดไป"
           >
             ถัดไป →
           </button>
         ) : <div />}
-      </div>
+      </nav>
 
       {/* Main content — Framer Motion slide transition ระหว่าง step */}
       <AnimatePresence mode="wait" initial={false}>
-        <m.div
+        <m.main
           key={step}
           variants={pageVariants}
           initial="initial"
           animate="animate"
           exit="exit"
+          aria-label={`Step ${step + 1}: ${STEPS[step].label}`}
           style={{
             position: "relative",
             zIndex: 1,
@@ -484,6 +489,7 @@ export default function GiftPage() {
             onClick={goNext}
             className="btn-primary glow-pulse"
             style={{ fontSize: "1rem", padding: "12px 32px", marginTop: "20px" }}
+            aria-label="ไปหน้าต่อไป"
           >
             {step === 0 && "ไปอ่านจดหมายจากเค้านะอ้วน"}
             {step === 1 && "ไปดูความทรงจำของเรากัน"}
@@ -491,7 +497,7 @@ export default function GiftPage() {
             {step === 3 && "ไปฟังเพลงกันเถอะ! 🎵"}
           </m.button>
         )}
-        </m.div>
+        </m.main>
       </AnimatePresence>
     </div>
   </LazyMotion>
