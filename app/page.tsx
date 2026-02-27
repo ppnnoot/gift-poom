@@ -43,8 +43,32 @@ export default function LandingPage() {
     const vh = window.innerHeight;
     const btnW = 200;
     const btnH = 56;
-    const top = Math.random() * (vh - btnH - 60) + 30;
-    const left = Math.random() * (vw - btnW - 60) + 30;
+
+    // Define safe zone (central 40% of the screen)
+    const safeZoneW = vw * 0.4;
+    const safeZoneH = vh * 0.4;
+    const safeZoneLeft = (vw - safeZoneW) / 2;
+    const safeZoneTop = (vh - safeZoneH) / 2;
+
+    let top, left;
+    let attempts = 0;
+    
+    // Try to find a position outside the safe zone
+    do {
+      top = Math.random() * (vh - btnH - 60) + 30;
+      left = Math.random() * (vw - btnW - 60) + 30;
+      attempts++;
+      
+      // Check if button rect overlaps with safe zone rect
+      const overlaps = 
+        left < safeZoneLeft + safeZoneW &&
+        left + btnW > safeZoneLeft &&
+        top < safeZoneTop + safeZoneH &&
+        top + btnH > safeZoneTop;
+        
+      if (!overlaps || attempts > 10) break;
+    } while (true);
+
     return { top: `${top}px`, left: `${left}px` };
   }, []);
 
