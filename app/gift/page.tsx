@@ -16,12 +16,12 @@ const STEPS = [
 ];
 
 const BGC_IMAGES = [
-  "/bgc/InShot_20260227_144929193.png",
-  "/bgc/InShot_20260227_145053581.png",
-  "/bgc/InShot_20260227_145146112.png",
-  "/bgc/InShot_20260227_145307435.png",
-  "/bgc/InShot_20260227_145400293.png",
-  "/bgc/InShot_20260227_145508416.png",
+  "/bgc/InShot_20260227_144929193.webp",
+  "/bgc/InShot_20260227_145053581.webp",
+  "/bgc/InShot_20260227_145146112.webp",
+  "/bgc/InShot_20260227_145307435.webp",
+  "/bgc/InShot_20260227_145400293.webp",
+  "/bgc/InShot_20260227_145508416.webp",
 ];
 
 async function fireConfetti(small = false) {
@@ -58,8 +58,8 @@ export default function GiftPage() {
       { type: "photo", src: "/80757.jpg", alt: "ความทรงจำ 1" },
       { type: "photo", src: "/80758.jpg", alt: "ความทรงจำ 2" },
       { type: "photo", src: "/80759.jpg", alt: "ความทรงจำ 3" },
-      { type: "photo", src: "/01.png", alt: "ความทรงจำ 4" },
-      { type: "photo", src: "/02.jpg", alt: "ความทรงจำ 5" },
+      { type: "photo", src: "/01.webp", alt: "ความทรงจำ 4" },
+      { type: "photo", src: "/02.webp", alt: "ความทรงจำ 5" },
     ];
 
     const videos: MemoryItem[] = [
@@ -242,6 +242,7 @@ export default function GiftPage() {
                 alt="บัณฑิตน่ารัก"
                 width={260}
                 height={260}
+                priority
                 style={{
                   borderRadius: "50%",
                   border: "5px solid #ffb3cf",

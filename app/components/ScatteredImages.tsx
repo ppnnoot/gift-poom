@@ -5,12 +5,12 @@ import { useMemo } from "react";
 import Image from "next/image";
 
 const BGC_IMAGES = [
-  "/bgc/InShot_20260227_144929193.png",
-  "/bgc/InShot_20260227_145053581.png",
-  "/bgc/InShot_20260227_145146112.png",
-  "/bgc/InShot_20260227_145307435.png",
-  "/bgc/InShot_20260227_145400293.png",
-  "/bgc/InShot_20260227_145508416.png",
+  "/bgc/InShot_20260227_144929193.webp",
+  "/bgc/InShot_20260227_145053581.webp",
+  "/bgc/InShot_20260227_145146112.webp",
+  "/bgc/InShot_20260227_145307435.webp",
+  "/bgc/InShot_20260227_145400293.webp",
+  "/bgc/InShot_20260227_145508416.webp",
 ];
 
 interface ScatteredImagesProps {
