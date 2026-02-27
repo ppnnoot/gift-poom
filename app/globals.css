@@ -27,6 +27,22 @@ body {
   color: var(--text-dark);
   min-height: 100vh;
   overflow-x: hidden;
+  position: relative;
+}
+
+/* ── Noise Overlay for Premium Feel ── */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  z-index: 1000;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
 }
 
 /* ── Floating Hearts Background ── */
@@ -38,20 +54,21 @@ body {
   overflow: hidden;
 }
 
-/* ── Glow Pulse for confirm button ── */
+/* ── Glow Pulse: Optimized with Opacity + Transform ── */
 @keyframes glowPulse {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(255, 133, 177, 0.4), 0 0 40px rgba(255, 179, 207, 0.2);
+    box-shadow: 0 0 15px rgba(255, 133, 177, 0.3);
     transform: scale(1);
   }
   50% {
-    box-shadow: 0 0 35px rgba(232, 67, 123, 0.5), 0 0 70px rgba(255, 133, 177, 0.3);
-    transform: scale(1.02);
+    box-shadow: 0 0 25px rgba(232, 67, 123, 0.4);
+    transform: scale(1.03);
   }
 }
 
 .glow-pulse {
-  animation: glowPulse 2s ease-in-out infinite;
+  animation: glowPulse 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform, box-shadow;
 }
 
 /* ── Shimmer for headings ── */
@@ -108,13 +125,18 @@ body {
 
 /* ── Letter / Card ── */
 .letter-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.85); /* Increased opacity to reduce blur dependency */
   border: 1px solid rgba(255, 214, 231, 0.5);
   border-radius: 24px;
   box-shadow: 0 10px 40px rgba(255, 133, 177, 0.15);
   position: relative;
   overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .letter-card {
+    backdrop-filter: blur(12px);
+  }
 }
 
 .letter-card::before {

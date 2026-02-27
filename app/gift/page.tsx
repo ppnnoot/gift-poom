@@ -26,15 +26,20 @@ const BGC_IMAGES = [
 
 async function fireConfetti(small = false) {
   const confetti = (await import("canvas-confetti")).default;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const multiplier = isMobile ? 0.6 : 1;
   const colors = ["#ff85b1", "#ffb3cf", "#ffd6e7", "#ff5c94", "#ffe3ee", "#c9184a", "#fff", "#ffef99"];
   const fire = (opts: object) => confetti({ colors, ...opts });
+  
   if (small) {
-    fire({ particleCount: 60, spread: 70, origin: { y: 0.5 } });
+    fire({ particleCount: Math.floor(60 * multiplier), spread: 70, origin: { y: 0.5 } });
   } else {
-    fire({ particleCount: 150, spread: 100, origin: { y: 0.4 } });
-    setTimeout(() => fire({ particleCount: 80, angle: 60, spread: 80, origin: { x: 0, y: 0.5 } }), 300);
-    setTimeout(() => fire({ particleCount: 80, angle: 120, spread: 80, origin: { x: 1, y: 0.5 } }), 600);
-    setTimeout(() => fire({ particleCount: 60, spread: 70, origin: { y: 0.6 } }), 1000);
+    fire({ particleCount: Math.floor(150 * multiplier), spread: 100, origin: { y: 0.4 } });
+    if (!isMobile) {
+      setTimeout(() => fire({ particleCount: 80, angle: 60, spread: 80, origin: { x: 0, y: 0.5 } }), 300);
+      setTimeout(() => fire({ particleCount: 80, angle: 120, spread: 80, origin: { x: 1, y: 0.5 } }), 600);
+      setTimeout(() => fire({ particleCount: 60, spread: 70, origin: { y: 0.6 } }), 1000);
+    }
   }
 }
 
@@ -355,13 +360,14 @@ export default function GiftPage() {
                         sizes="(max-width: 600px) 50vw, 280px"
                       />
                     ) : (
-                      <div className="video-card-inner" style={{ borderRadius: "16px", overflow: "hidden" }}>
+                      <div className="video-card-inner" style={{ borderRadius: "16px", overflow: "hidden", position: "relative", minHeight: "180px", background: "#000" }}>
                         <iframe
-                          src={item.src}
+                          src={`${item.src}?loading=lazy`}
                           title={item.label}
                           width="100%"
                           height="180"
                           allow="autoplay"
+                          loading="lazy"
                           style={{ display: "block", border: "none" }}
                         />
                       </div>

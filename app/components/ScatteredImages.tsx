@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { m, useReducedMotion } from "framer-motion";
+import { useMemo, useEffect, useState } from "react";
 import Image from "next/image";
 
 const BGC_IMAGES = [
@@ -26,8 +26,20 @@ export default function ScatteredImages({
   blur = "0.5px",
   isCenter = false
 }: ScatteredImagesProps) {
+  const shouldReduceMotion = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const finalCount = isMobile ? Math.min(count, 4) : count;
+
   const scattered = useMemo(() => {
-    return Array.from({ length: count }, (_, i) => {
+    return Array.from({ length: finalCount }, (_, i) => {
       let leftPos;
       if (isCenter) {
         // Distribute across the middle section (20-80%)
@@ -60,14 +72,14 @@ export default function ScatteredImages({
       style={{ zIndex: 0 }}
     >
       {scattered.map((img) => (
-        <motion.div
+        <m.div
           key={img.id}
           initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }}
           animate={{ 
             opacity: img.opacity,
             scale: img.scale,
-            y: ["-50%", "-60%", "-50%"],
-            rotate: [img.rotate, img.rotate + 8, img.rotate - 8, img.rotate]
+            y: shouldReduceMotion ? "-50%" : ["-50%", "-60%", "-50%"],
+            rotate: shouldReduceMotion ? img.rotate : [img.rotate, img.rotate + 8, img.rotate - 8, img.rotate]
           }}
           transition={{
             opacity: { duration: 1.5 },
@@ -80,9 +92,9 @@ export default function ScatteredImages({
             position: "absolute",
             top: img.top,
             left: img.left,
-            width: "clamp(150px, 40vw, 300px)", // Responsive size
+            width: isMobile ? "120px" : "clamp(150px, 40vw, 300px)",
             height: "auto",
-            filter: blur !== "0px" ? `blur(${blur}) drop-shadow(0 4px 15px rgba(0,0,0,0.1))` : "none",
+            filter: (blur !== "0px" && !isMobile) ? `blur(${blur}) drop-shadow(0 4px 15px rgba(0,0,0,0.1))` : "none",
             zIndex: -1,
             willChange: "transform, opacity",
           }}
@@ -92,10 +104,10 @@ export default function ScatteredImages({
             alt="background decoration"
             width={300}
             height={500}
-            priority={img.id < 2} // Priority for top few images
+            priority={img.id < 2}
             style={{ width: "100%", height: "auto", objectFit: "contain" }}
           />
-        </motion.div>
+        </m.div>
       ))}
     </div>
   );
