@@ -27,11 +27,11 @@ export default function FloatingHearts({ count = 16 }: FloatingHeartsProps) {
       {hearts.map((h) => (
         <motion.span
           key={h.id}
-          initial={{ y: "110vh", opacity: 0, x: h.left }}
+          initial={{ y: "110vh", opacity: 0, x: 0 }}
           animate={{
             y: "-10vh",
             opacity: [0, 0.7, 0.7, 0],
-            x: [`calc(${h.left} + 0px)`, `calc(${h.left} + ${h.startX}px)`, `calc(${h.left} - ${h.startX}px)`, `calc(${h.left} + 0px)`],
+            x: [0, h.startX, -h.startX, 0],
             rotate: [0, 10, -10, 0],
           }}
           transition={{
@@ -42,8 +42,10 @@ export default function FloatingHearts({ count = 16 }: FloatingHeartsProps) {
           }}
           style={{
             position: "absolute",
+            left: h.left,
             fontSize: `${h.size}rem`,
             filter: "drop-shadow(0 0 10px rgba(255,182,193,0.3))",
+            willChange: "transform, opacity",
           }}
         >
           {h.emoji}

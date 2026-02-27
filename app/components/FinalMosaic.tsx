@@ -83,6 +83,7 @@ export default function FinalMosaic({ memoryImages, bgcImages }: FinalMosaicProp
               relative overflow-hidden rounded-xl shadow-2xl border-2 border-white/60
               ${img.type === 'bgc' ? 'w-24 md:w-48' : 'w-36 md:w-64'}
             `}
+            style={{ willChange: "transform, opacity" }}
           >
             <Image
               src={img.src}

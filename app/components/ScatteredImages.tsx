@@ -62,11 +62,11 @@ export default function ScatteredImages({
       {scattered.map((img) => (
         <motion.div
           key={img.id}
-          initial={{ opacity: 0, scale: 0 }}
+          initial={{ opacity: 0, scale: 0, x: "-50%", y: "-50%" }}
           animate={{ 
             opacity: img.opacity,
             scale: img.scale,
-            y: [0, -30, 0],
+            y: ["-50%", "-60%", "-50%"],
             rotate: [img.rotate, img.rotate + 8, img.rotate - 8, img.rotate]
           }}
           transition={{
@@ -82,9 +82,9 @@ export default function ScatteredImages({
             left: img.left,
             width: "clamp(150px, 40vw, 300px)", // Responsive size
             height: "auto",
-            filter: `blur(${blur}) drop-shadow(0 4px 15px rgba(0,0,0,0.1))`,
-            transform: "translate(-50%, -50%)",
+            filter: blur !== "0px" ? `blur(${blur}) drop-shadow(0 4px 15px rgba(0,0,0,0.1))` : "none",
             zIndex: -1,
+            willChange: "transform, opacity",
           }}
         >
           <Image
@@ -92,6 +92,7 @@ export default function ScatteredImages({
             alt="background decoration"
             width={300}
             height={500}
+            priority={img.id < 2} // Priority for top few images
             style={{ width: "100%", height: "auto", objectFit: "contain" }}
           />
         </motion.div>
