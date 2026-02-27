@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { domMax, LazyMotion, m, AnimatePresence, useReducedMotion } from "framer-motion";
 import FloatingHearts from "./components/FloatingHearts";
 import ScatteredImages from "./components/ScatteredImages";
 
@@ -17,6 +17,7 @@ export default function LandingPage() {
   const [check2, setCheck2] = useState(false);
   const btnRef = useRef<HTMLButtonElement>(null);
   const prankCountRef = useRef(0);
+  const shouldReduceMotion = useReducedMotion();
 
   // ── Confetti on mount
   useEffect(() => {
@@ -117,25 +118,26 @@ export default function LandingPage() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "linear-gradient(145deg, #fff0f6 0%, #ffe8ef 40%, #ffd6e7 100%)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <LazyMotion features={domMax}>
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "linear-gradient(145deg, #fff0f6 0%, #ffe8ef 40%, #ffd6e7 100%)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "24px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
       <FloatingHearts count={12} />
       {/* <ScatteredImages count={6} opacity={1} blur="0px" isCenter={true} /> */}
 
       <AnimatePresence mode="wait">
         {pageState !== "checkpoint" ? (
-          <motion.div
+          <m.div
             key="idle-prank"
             variants={containerVariants}
             initial="initial"
@@ -152,7 +154,7 @@ export default function LandingPage() {
               maxWidth: "500px",
             }}
           >
-            <motion.div variants={itemVariants}>
+            <m.div variants={itemVariants}>
               <h1
                 style={{
                   fontFamily: "'Playfair Display', serif",
@@ -168,7 +170,7 @@ export default function LandingPage() {
                 {clickCount === 2 && "กดผิดอีกแล้วนะอ้วน กดใหม่!"}
               </h1>
               
-              <motion.p 
+              <m.p 
                 style={{ 
                   color: "#b76e79", 
                   fontSize: "1.1rem", 
@@ -179,11 +181,11 @@ export default function LandingPage() {
                 {pageState === "idle" 
                   ? "มีของพิเศษรออ้วนอยู่นะ" 
                   : "ลองจิ้มอีกทีนะ เค้าไม่แกล้งแล้ว"}
-              </motion.p>
-            </motion.div>
+              </m.p>
+            </m.div>
 
-            <motion.div variants={itemVariants}>
-              <motion.button
+            <m.div variants={itemVariants}>
+              <m.button
                 ref={btnRef}
                 onClick={handleButtonClick}
                 onMouseEnter={handleButtonHover}
@@ -199,11 +201,11 @@ export default function LandingPage() {
                 }}
               >
                 {pageState === "idle" ? "พร้อมแล้ว กดตรงนี้" : "จิ้มปุ่มนี้สิ"}
-              </motion.button>
-            </motion.div>
-          </motion.div>
+              </m.button>
+            </m.div>
+          </m.div>
         ) : (
-          <motion.div
+          <m.div
             key="checkpoint"
             variants={containerVariants}
             initial="initial"
@@ -220,7 +222,7 @@ export default function LandingPage() {
               textAlign: "center",
             }}
           >
-            <motion.div variants={itemVariants}>
+            <m.div variants={itemVariants}>
               <h1
                 style={{
                   fontSize: "clamp(1.6rem, 5vw, 2.22rem)",
@@ -233,9 +235,9 @@ export default function LandingPage() {
               <p style={{ color: "#7a3a52", fontSize: "1.2rem", marginTop: "4px" }}>
                 แต่ก่อนดู... ตอบคำถาม 2 ข้อนี้ก่อนนะ
               </p>
-            </motion.div>
+            </m.div>
 
-            <motion.div variants={itemVariants} style={{ width: "100%" }}>
+            <m.div variants={itemVariants} style={{ width: "100%" }}>
               <div className="letter-card" style={{ padding: "32px", display: "flex", flexDirection: "column", gap: "20px" }}>
                 <label style={{ display: "flex", alignItems: "center", gap: "16px", cursor: "pointer", textAlign: "left" }}>
                   <input
@@ -261,12 +263,12 @@ export default function LandingPage() {
                   </span>
                 </label>
               </div>
-            </motion.div>
+            </m.div>
 
-            <motion.div variants={itemVariants}>
+            <m.div variants={itemVariants}>
               <AnimatePresence>
                 {bothChecked ? (
-                  <motion.button
+                  <m.button
                     initial={{ scale: 0.5, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.5, opacity: 0 }}
@@ -274,17 +276,18 @@ export default function LandingPage() {
                     className="btn-primary glow-pulse"
                   >
                     ยืนยัน! ไปดูกันเลยยย
-                  </motion.button>
+                  </m.button>
                 ) : (
                   <p style={{ color: "#ffb3cf", fontSize: "0.95rem", fontStyle: "italic" }}>
                     ติ๊กให้ครบ 2 ข้อก่อนนะอ้วน
                   </p>
                 )}
               </AnimatePresence>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>
-  );
+  </LazyMotion>
+);
 }

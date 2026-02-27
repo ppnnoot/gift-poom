@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { domMax, LazyMotion, m, AnimatePresence, useReducedMotion } from "framer-motion";
 import FloatingHearts from "../components/FloatingHearts";
 import FinalMosaic from "../components/FinalMosaic";
 
@@ -51,6 +51,7 @@ export default function GiftPage() {
   const [maxStep, setMaxStep] = useState(0); // สูงสุด step ที่เคยเข้าถึงแล้ว
   const [animKey, setAnimKey] = useState(0);
   const launchedRef = useRef(false);
+  const shouldReduceMotion = useReducedMotion();
 
   // ── รวมรูปและวิดีโอ ──
   const MEMORIES = useMemo(() => {
@@ -130,15 +131,16 @@ export default function GiftPage() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "linear-gradient(160deg, #fff0f6 0%, #ffe8ef 30%, #ffd6e7 60%, #fff0f6 100%)",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      <FloatingHearts count={16} />
+    <LazyMotion features={domMax}>
+      <div
+        style={{
+          minHeight: "100vh",
+          background: "linear-gradient(160deg, #fff0f6 0%, #ffe8ef 30%, #ffd6e7 60%, #fff0f6 100%)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <FloatingHearts count={16} />
 
       {/* Nav bar: ย้อนกลับ / ถัดไป */}
       <div
@@ -204,7 +206,7 @@ export default function GiftPage() {
 
       {/* Main content — Framer Motion slide transition ระหว่าง step */}
       <AnimatePresence mode="wait" initial={false}>
-        <motion.div
+        <m.div
           key={step}
           variants={pageVariants}
           initial="initial"
@@ -225,18 +227,18 @@ export default function GiftPage() {
 
         {/* ── STEP 0: HERO ── */}
         {step === 0 && (
-          <motion.section key="step0" variants={pageVariants} style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", width: "100%" }}>
-            <motion.h1 
+          <m.section key="step0" variants={pageVariants} style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", width: "100%" }}>
+            <m.h1 
               variants={itemVariants} 
               style={{ fontSize: "clamp(2rem, 7vw, 3rem)", fontWeight: 800, lineHeight: 1.3, color: "#e8437b" }}
             >
               ยินดีด้วยนะ อ้วน
-            </motion.h1>
-            <motion.p variants={itemVariants} style={{ color: "#b76e79", fontSize: "1.05rem", lineHeight: 1.8, fontWeight: 500 }}>
+            </m.h1>
+            <m.p variants={itemVariants} style={{ color: "#b76e79", fontSize: "1.05rem", lineHeight: 1.8, fontWeight: 500 }}>
               เก่งมากเรียนจบ ม.6 แล้ว เก่งที่สุดเลย<br />
               อย่าลืมภูมิใจในตัวเองเยอะๆ นะ
-            </motion.p>
-            <motion.div variants={itemVariants} style={{ marginTop: "8px" }}>
+            </m.p>
+            <m.div variants={itemVariants} style={{ marginTop: "8px" }}>
               <Image
                 src="/80760.jpg"
                 alt="บัณฑิตน่ารัก"
@@ -250,16 +252,16 @@ export default function GiftPage() {
                   transform: "rotate(90deg)",
                 }}
               />
-            </motion.div>
+            </m.div>
 
-            <motion.div variants={itemVariants} style={{ width: "100%", display: "flex", flexDirection: "column", gap: "12px", textAlign: "left" }}>
+            <m.div variants={itemVariants} style={{ width: "100%", display: "flex", flexDirection: "column", gap: "12px", textAlign: "left" }}>
               {[
                 "ยินดีด้วยนะคับที่เรียนจบ ม.6 แล้ว ภูมิใจในตัวเองเยอะ ๆ เลยนะ เพราะการมาถึงวันนี้ไม่ง่ายเลย",
                 "ตลอดเวลาที่ผ่านมา อ้วนต้องผ่านทั้งความเหนื่อย ความกดดัน และเรื่องต่าง ๆ มากมาย แต่สุดท้ายอ้วนก็ทำสำเร็จได้ เก่งมากจริง ๆ",
                 "วันนี้คือจุดเริ่มต้นของเส้นทางใหม่ ๆ ที่รออยู่ข้างหน้า ไม่ว่าอ้วนจะเลือกเดินไปทางไหน ขอให้เป็นทางที่ทำให้มีความสุข",
                 "อย่าลืมเชื่อมั่นในตัวเองเหมือนที่เค้าเชื่อมั่นในอ้วนเสมอนะ ยินดีด้วยอีกครั้ง ภูมิใจมากจริง ๆ",
               ].map((text, i) => (
-                <motion.div
+                <m.div
                   key={i}
                   whileHover={{ x: 6 }}
                   style={{
@@ -275,21 +277,21 @@ export default function GiftPage() {
                   }}
                 >
                   {text}
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
-          </motion.section>
+            </m.div>
+          </m.section>
         )}
 
         {/* ── STEP 1: LOVE LETTER ── */}
         {step === 1 && (
-          <motion.section key="step1" variants={pageVariants} className="letter-card" style={{ width: "100%", padding: "32px 24px" }}>
-            <motion.div variants={itemVariants} style={{ textAlign: "center", marginBottom: "20px" }}>
+          <m.section key="step1" variants={pageVariants} className="letter-card" style={{ width: "100%", padding: "32px 24px" }}>
+            <m.div variants={itemVariants} style={{ textAlign: "center", marginBottom: "20px" }}>
               <h2 style={{ fontSize: "1.6rem", fontWeight: 800, color: "#c9184a", marginTop: "8px" }}>
                 จดหมายถึงอ้วน
               </h2>
-            </motion.div>
-            <motion.div variants={itemVariants} style={{ color: "#4a2030", lineHeight: 1.8, fontSize: "0.98rem", display: "flex", flexDirection: "column", gap: "14px", position: "relative", zIndex: 1 }}>
+            </m.div>
+            <m.div variants={itemVariants} style={{ color: "#4a2030", lineHeight: 1.8, fontSize: "0.98rem", display: "flex", flexDirection: "column", gap: "14px", position: "relative", zIndex: 1 }}>
               <p style={{ fontWeight: 600 }}>ถึงอ้วนของเค้า</p>
               <p>วันนี้เป็นวันสำคัญมาก ๆ เลยนะ วันที่อ้วนใกล้จบ ม.6</p>
               <p>เค้าเห็นความตั้งใจของอ้วนมาตลอด เห็นวันที่เหนื่อย วันที่กดดัน วันที่คิดมาก แต่ถึงอย่างนั้นอ้วนก็ยังสู้ ยังพยายาม และไม่ยอมแพ้เลย เค้าภูมิใจในตัวอ้วนมาก ๆ</p>
@@ -300,16 +302,16 @@ export default function GiftPage() {
               <p style={{ textAlign: "right", color: "#e8437b", fontStyle: "italic", fontWeight: 600, fontSize: "1.1rem" }}>
                 รักนะ, — ภูมิ
               </p>
-            </motion.div>
-          </motion.section>
+            </m.div>
+          </m.section>
         )}
 
         {/* ── STEP 2: GALLERY (รูป + วิดีโอ) ── */}
         {step === 2 && (
-          <motion.section key="step2" variants={pageVariants} style={{ width: "100%", textAlign: "center" }}>
-            <motion.h2 variants={itemVariants} style={{ fontSize: "2rem", fontWeight: 800, color: "#c9184a", marginBottom: "32px" }}>
+          <m.section key="step2" variants={pageVariants} style={{ width: "100%", textAlign: "center" }}>
+            <m.h2 variants={itemVariants} style={{ fontSize: "2rem", fontWeight: 800, color: "#c9184a", marginBottom: "32px" }}>
               ความทรงจำ
-            </motion.h2>
+            </m.h2>
 
             <div
               style={{
@@ -324,7 +326,7 @@ export default function GiftPage() {
                 const rot = rotations[i % rotations.length];
                 
                 return (
-                  <motion.div
+                  <m.div
                     key={i}
                     variants={itemVariants}
                     whileHover={{ scale: 1.05, rotate: 0, zIndex: 10 }}
@@ -364,34 +366,34 @@ export default function GiftPage() {
                         />
                       </div>
                     )}
-                  </motion.div>
+                  </m.div>
                 );
               })}
             </div>
 
-            <motion.p variants={itemVariants} style={{ marginTop: "32px", color: "#b76e79", fontSize: "1.1rem", fontStyle: "italic", fontWeight: 500 }}>
+            <m.p variants={itemVariants} style={{ marginTop: "32px", color: "#b76e79", fontSize: "1.1rem", fontStyle: "italic", fontWeight: 500 }}>
               ทุกช่วงเวลาที่ผ่านมาด้วยกัน ล้วนมีค่า
-            </motion.p>
-          </motion.section>
+            </m.p>
+          </m.section>
         )}
 
 
 
         {/* ── STEP 3: SUMMARY MOSAIC ── */}
         {step === 3 && (
-          <motion.section key="step3" variants={pageVariants} style={{ width: "100%", position: "relative" }}>
+          <m.section key="step3" variants={pageVariants} style={{ width: "100%", position: "relative" }}>
             <div className="flex flex-col items-center justify-center min-h-[70vh] text-center px-4">
               <FinalMosaic 
                 memoryImages={MEMORIES.filter(m => m.type === 'photo').map(m => m.src)} 
                 bgcImages={BGC_IMAGES} 
               />
               
-              <motion.div 
+              <m.div 
                 variants={itemVariants} 
                 className="relative z-10 p-6 md:p-12 max-w-2xl w-[95%]"
               >
                 <div className="space-y-6 md:space-y-8">
-                  <motion.h2 
+                  <m.h2 
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.6 }}
@@ -401,9 +403,9 @@ export default function GiftPage() {
                     <span className="mt-2 bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-rose-500 to-rose-600 block mt-2">
                       รักที่สุดในโลกเลย
                     </span>
-                  </motion.h2>
+                  </m.h2>
 
-                  <motion.div 
+                  <m.div 
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.8 }}
@@ -416,28 +418,28 @@ export default function GiftPage() {
                     <p>
                       ไม่ว่าอ้วนจะเจออะไร เค้าจะคอยเป็นกำลังใจให้ ซัพพอร์ต และอยู่ข้างๆ อ้วนเสมอเลยนะ ยินดีด้วยอีกครั้งนะครับคนเก่ง!
                     </p>
-                  </motion.div>
+                  </m.div>
 
                   {/* Central button removed as requested - moved to global nav */}
                 </div>
-              </motion.div>
+              </m.div>
             </div>
-          </motion.section>
+          </m.section>
         )}
 
         {/* ── STEP 4: SONG ── */}
         {step === 4 && (
-          <motion.section key="step4" variants={pageVariants} style={{ width: "100%" }}>
-            <motion.div variants={itemVariants} className="song-card" style={{ padding: "36px" }}>
-              <motion.div style={{ textAlign: "center", marginBottom: "28px" }}>
+          <m.section key="step4" variants={pageVariants} style={{ width: "100%" }}>
+            <m.div variants={itemVariants} className="song-card" style={{ padding: "36px" }}>
+              <m.div style={{ textAlign: "center", marginBottom: "28px" }}>
                 <h2 style={{ fontSize: "2rem", fontWeight: 800, color: "#c9184a", marginTop: "12px" }}>
                   เพลงที่อยากมอบให้
                 </h2>
                 <p style={{ color: "#b76e79", fontSize: "1.05rem", marginTop: "8px", fontWeight: 500 }}>
                   เค้ามีเพลงเยอะมากที่อยากให้อ้วน แต่ขอเลือกเพลงนี้มาให้...
                 </p>
-              </motion.div>
-              <motion.div 
+              </m.div>
+              <m.div 
                 whileHover={{ scale: 1.02 }}
                 style={{ borderRadius: "24px", overflow: "hidden", boxShadow: "0 15px 40px rgba(255,133,177,0.3)", background: "#fff" }}
               >
@@ -451,25 +453,25 @@ export default function GiftPage() {
                   allowFullScreen
                   style={{ display: "block" }}
                 />
-              </motion.div>
+              </m.div>
               <p style={{ textAlign: "center", marginTop: "24px", color: "#e8437b", fontSize: "1.1rem", fontStyle: "italic", fontWeight: 500 }}>
                 เพลงนี้ทำให้นึกถึงอ้วนทุกครั้งที่ได้ยินเลยนะครับ
               </p>
-            </motion.div>
+            </m.div>
 
             {/* Footer */}
-            <motion.div variants={itemVariants} style={{ textAlign: "center", marginTop: "60px", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
+            <m.div variants={itemVariants} style={{ textAlign: "center", marginTop: "60px", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
               <p style={{ fontSize: "1.4rem", color: "#c9184a", fontStyle: "italic", fontWeight: 800 }}>
                 "อ้วนคือของขวัญที่ดีที่สุดในชีวิตเค้า"
               </p>
               <p style={{ color: "#b76e79", fontSize: "0.9rem", fontWeight: 600, opacity: 0.8 }}>- made with love for you -</p>
-            </motion.div>
-          </motion.section>
+            </m.div>
+          </m.section>
         )}
 
         {/* ── NEXT BUTTON ── */}
         {!isLast && (
-          <motion.button
+          <m.button
             variants={itemVariants}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -481,10 +483,11 @@ export default function GiftPage() {
             {step === 1 && "ไปดูความทรงจำของเรากัน"}
             {step === 2 && "สุดท้ายแล้ววว"}
             {step === 3 && "ไปฟังเพลงกันเถอะ! 🎵"}
-          </motion.button>
+          </m.button>
         )}
-        </motion.div>
+        </m.div>
       </AnimatePresence>
     </div>
-  );
+  </LazyMotion>
+);
 }
